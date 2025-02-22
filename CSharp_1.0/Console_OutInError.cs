@@ -15,7 +15,7 @@ namespace CSHARP{
             //Console.ReadKey();
             //Console.Read();
             //Console.ReadLine();
-            Console.WriteLine(Console.CapsLock);
+            //Console.WriteLine(Console.CapsLock);
 
             TextReader tIn = Console.In;
             TextWriter tOut = Console.Out;
