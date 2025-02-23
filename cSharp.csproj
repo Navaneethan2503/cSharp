@@ -3,9 +3,9 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <StartupObject>CSHARP.Program</StartupObject><!--Specify which Main method need to be Entry Point among one or more Class having Main Method-->
+    <!--<ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>-->
+    <StartupObject>MyClassNamespace.Program</StartupObject><!--Specify which Main method need to be Entry Point among one or more Class having Main Method-->
   </PropertyGroup>
 
 </Project>
