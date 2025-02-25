@@ -1,8 +1,15 @@
-﻿
+﻿using System;
 
-namespace CSHARP{
-    
-    
+namespace CSHARP
+{
 
-    
+    class Program
+    {
+        public static void Main()
+        {
+            
+        }
+    }
+
+
 }
