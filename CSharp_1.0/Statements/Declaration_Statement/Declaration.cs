@@ -176,13 +176,6 @@ namespace Declaration{
 
     
     public class Declaration{
-        public Span<int> Data;
-
-        public Declaration(scoped Span<int> data)
-        {
-            Data = data;
-        }
-
     
         public static void Main(){
             Console.WriteLine("Declaration Statement :");
