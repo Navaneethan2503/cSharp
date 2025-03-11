@@ -74,10 +74,10 @@ namespace UsingStatament{
             Console.WriteLine("UsingStatament");
 
             var numbers = new List<int>();
-            using (StreamReader reader = File.OpenText(@"C:\Learning\cSharp\CSharp_1.0\Notes"))
+            using (StreamReader reader1 = File.OpenText(@"C:\Learning\cSharp\CSharp_1.0\Notes"))
             {
                 string line;
-                while ((line = reader.ReadLine()) is not null)
+                while ((line = reader1.ReadLine()) is not null)
                 {
                     if (int.TryParse(line, out int number))
                     {
@@ -97,12 +97,12 @@ namespace UsingStatament{
             //You can also use the using statement and declaration with an instance of a ref struct that fits the disposable pattern. That is, it has an instance Dispose method, which is accessible, parameterless and has a void return type.
             //The using statement can also be of the following form:
             //where expression produces a disposable instance.
-            using (expression)
-            {
-                // ...
-            }
+            // using (expression)
+            // {
+            //     // ...
+            // }
             
-            StreamReader reader = File.OpenText(filePath);
+            StreamReader reader = File.OpenText("");
 
             using (reader)
             {
