@@ -60,6 +60,12 @@ Binary arithmetic operators are left-associative. That is, operators with the sa
 Use parentheses, (), to change the order of evaluation imposed by operator precedence and associativity.
 
 
+These operators are used for mathematical calculations.
+
+Highest Precedence: () (Parentheses)
+Next: *, /, % (Multiplication, Division, Modulus)
+Lowest: +, - (Addition, Subtraction)
+
 
 **/
 

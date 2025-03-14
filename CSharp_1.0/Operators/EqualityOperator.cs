@@ -24,7 +24,7 @@ A record type can't explicitly overload the == and != operators. If you need to 
 Equals method with the following signature:
 public virtual bool Equals(T? other);
 
-
+Highest Precedence: ==, != (Equal to, Not equal to)
 **/
 namespace EqualityOperator{
     class EqualityOperatorClass{

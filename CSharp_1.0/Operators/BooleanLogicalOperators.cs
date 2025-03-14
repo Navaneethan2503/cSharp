@@ -69,6 +69,9 @@ A user-defined type can overload the !, &, |, and ^ operators. When a binary ope
 
 A user-defined type can't overload the conditional logical operators && and ||. However, if a user-defined type overloads the true and false operators and the & or | operator in a certain way, the && or || operation, respectively, can be evaluated for the operands of that type.
 
+Highest Precedence: && (Logical AND)
+Lowest Precedence: || (Logical OR)
+
 **/
 namespace BooleanLogicalOperators{
     class BooleanLogicalOperatorsClass{
