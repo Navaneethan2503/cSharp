@@ -89,6 +89,10 @@ namespace NewNamespace{
         public void Print(){
             Console.WriteLine("{0} Counts of Color :{1}",_count,color);
         }
+
+        public void Display(){
+            Console.WriteLine("Displauy");
+        }
     }
 
     class Circle : Shape{
@@ -103,15 +107,22 @@ namespace NewNamespace{
             Console.WriteLine("This is Circle : {0} Counts of Color :{1}",_count,color);
         }
 
+        //Also Hide the method without new keyword but to avoid confusions its recommended to use new keyword
+        public void Display(){
+            Console.WriteLine("Displauy");
+        }
+
     }
     public class NewClass{
         public static void Main(){
             Console.WriteLine("New Modifier");
             Circle c = new Circle();
             c.Print();
+            c.Display();
             Shape ex = (Shape)c;
             ex.Print();//output - 10 Counts of Color :red - new keyword not completely hided or replace like override it just hide and can access when needed.
-
+            ex.Display();
+            
             Shape.NestedClasss s = new Shape.NestedClasss();
             Console.WriteLine("Hided Nested base class still exists :"+ s.x);
 
