@@ -83,6 +83,15 @@ Lambda Expressions and Anonymous Methods: When using lambda expressions or anony
 Caching: The .NET runtime can optimize memory usage by caching delegate instances, especially for static methods or lambdas that do not capture variables3.
 
 
+Build-In Delegate:
+1) Action Delegate:
+Purpose: Represents a method that takes one or more parameters but does not return a value.
+Syntax: Action<T1, T2, ...> where T1, T2, ... are the types of the parameters.
+
+2) Func Delegate:
+Purpose: Represents a method that takes one or more parameters and returns a value.
+Syntax: Func<T1, T2, ..., TResult> where T1, T2, ... are the types of the parameters and TResult is the return type.
+
 
 **/
 
@@ -210,6 +219,31 @@ namespace DelegateType{
             
             MyDelegate input = new ArithmeticClass().GetInputFromOperation;
             //input();
+
+            //Built-in Delegate Types
+            Console.WriteLine("Build-in Delegate Types : Action and Func");
+            Action unKnownMethod = () => Console.WriteLine("unKnownMethod");//no input and no output.
+            unKnownMethod();
+
+            Action<int> printAge = (age) => Console.WriteLine("Age is :"+ age);//one input and no output.
+            printAge(18);
+
+            Action<string,int> printDetails =(name,age) => {
+                Console.WriteLine("Name is :"+ name+ "Age is :"+ age);
+            };
+            printDetails("Navaneethan",25);
+
+            //In Action Built-in delegate we have 17 different type of delegate with parameters from 0 to 16.
+
+            //Func - Built in delegate
+            Console.WriteLine("Func :");
+            Func<int> res = () => 1001;//no input and one output
+            Console.WriteLine("Func with no input with return type :"+res());
+
+            Func<int,int,string> sunNum = (a,b) => (a+b).ToString();
+            Console.WriteLine("Sum of two numbers with Func Delegate :"+ sunNum(1,2));
+
+            
         }
     }
 }
