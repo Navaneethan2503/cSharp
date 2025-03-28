@@ -6,7 +6,9 @@
     <!-- <AllowUnsafeBlocks>true</AllowUnsafeBlocks>Enable Unsafe Code for using pointer -->
     <!--<ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>-->
-    <StartupObject>ArrayType.ArrayType</StartupObject><!--Specify which Main method need to be Entry Point among one or more Class having Main Method-->
+    <StartupObject>UserDefinedConvertionOperator.UserDefinedConvertionOperatorClass</StartupObject><!--Specify which Main method need to be Entry Point among one or more Class having Main Method-->
+    <NoWarn>CA2013,CA2200,CS0414,CS8656,CS0168,CS0162,CS0219,CS8620,CS8602,CS8618,CS8604,CS8600,CS0458,CS0108,CS8632,
+    CS8981,CS8625,CS0183</NoWarn>
   </PropertyGroup>
-
+<!--.\dotnet-install.ps1 -Channel LTS -InstallDir C:\dotnet-->
 </Project>
