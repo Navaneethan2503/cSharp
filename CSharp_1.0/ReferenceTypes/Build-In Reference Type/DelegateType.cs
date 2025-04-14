@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 /**
 delegate is a type that represents references to methods with a specific parameter list and return type.
 
@@ -92,6 +93,13 @@ Syntax: Action<T1, T2, ...> where T1, T2, ... are the types of the parameters.
 Purpose: Represents a method that takes one or more parameters and returns a value.
 Syntax: Func<T1, T2, ..., TResult> where T1, T2, ... are the types of the parameters and TResult is the return type.
 
+3) Predicate Delegate:
+ the Predicate<T> delegate is a predefined delegate that represents a method that defines a set of criteria and determines whether the specified object meets those criteria. It is commonly used with collections to filter elements based on certain conditions.
+ public delegate bool Predicate<in T>(T obj);
+
+ Typically, the Predicate<T> delegate is represented by a lambda expression. Because locally scoped variables are available to the lambda expression, it is easy to test for a condition that is not precisely known at compile time.
+
+ 
 
 **/
 
@@ -243,7 +251,35 @@ namespace DelegateType{
             Func<int,int,string> sunNum = (a,b) => (a+b).ToString();
             Console.WriteLine("Sum of two numbers with Func Delegate :"+ sunNum(1,2));
 
-            
+            //Predicate - Built in delegate
+            // Create an array of Point structures.
+            Console.WriteLine("Predicate Built-in Delegate");
+            Point[] points = { new Point(100, 200),
+                                new Point(150, 250), new Point(250, 375),
+                                new Point(275, 395), new Point(295, 450) };
+
+            // Define the Predicate<T> delegate.
+            Predicate<Point> predicate = FindPoints;
+
+            // Find the first Point structure for which X times Y
+            // is greater than 100000.
+            Point first = Array.Find(points, predicate);
+
+            // Display the first structure found.
+            Console.WriteLine("Found: X = {0}, Y = {1}", first.X, first.Y);
+
+            // Find the first Point structure for which X times Y
+            // is greater than 100000.
+            Point first1 = Array.Find(points, x => x.X * x.Y > 100000 );
+
+            // Display the first structure found.
+            Console.WriteLine("Found: X = {0}, Y = {1}", first1.X, first1.Y);
         }
+
+        private static bool FindPoints(Point obj)
+        {
+            return obj.X * obj.Y > 100000;
+        }
+
     }
 }
