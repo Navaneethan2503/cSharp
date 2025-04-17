@@ -54,10 +54,10 @@ namespace CastingTypeConvertion{
                 //Output: 2274
 
                 //The following example shows how to convert a hexadecimal string to a float by using the System.BitConverter class and the UInt32.Parse method.
-                string hexString = "43480170";
-                uint num = uint.Parse(hexString, System.Globalization.NumberStyles.AllowHexSpecifier);
+                string hexString1 = "43480170";
+                uint num1 = uint.Parse(hexString1, System.Globalization.NumberStyles.AllowHexSpecifier);
 
-                byte[] floatVals = BitConverter.GetBytes(num);
+                byte[] floatVals = BitConverter.GetBytes(num1);
                 float f = BitConverter.ToSingle(floatVals, 0);
                 Console.WriteLine($"float convert = {f}");
 
