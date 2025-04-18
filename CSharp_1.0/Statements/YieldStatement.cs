@@ -1,247 +1,128 @@
 using System;
+using System.Collections.Generic;
+
 /**
-The checked and unchecked statements and operators only affect the overflow-checking context for those operations that are textually inside the statement block or operator's parentheses.
-In C#, the checked and unchecked statements are used to control the overflow-checking context for arithmetic operations and conversions. Here's a detailed look at both:
 
-checked Statement
-The checked statement ensures that arithmetic operations and conversions are checked for overflow. If an overflow occurs, a System.OverflowException is thrown.
+The yield statement in C# is a powerful feature used in iterator methods to provide a simple way to implement custom iteration over collections. It allows you to return each element of a collection one at a time, without having to create an intermediate collection or explicitly manage the state of the iteration.
 
-Example:
+Key Concepts of yield:
+-----------------------
+Iterator Methods: Methods that use the yield statement to return elements one at a time.
+Deferred Execution: The yield statement enables deferred execution, meaning the elements are generated only when they (foreach loop) are requested.
+State Management: The compiler automatically manages the state of the iteration, making the code simpler and more readable.
 
-int max = int.MaxValue;
-try
-{
-    int result = checked(max + 1);
-}
-catch (OverflowException ex)
-{
-    Console.WriteLine("Overflow occurred: " + ex.Message);
-}
-In this example, the addition operation max + 1 is checked for overflow. Since max is the maximum value an int can hold, adding 1 causes an overflow, and an OverflowException is thrown.
+Syntax:
+---------
+The yield statement can be used in two ways:
+    yield return: To return each element of the collection.
+    yield break: To end the iteration.
 
-unchecked Statement
-The unchecked statement disables overflow checking for arithmetic operations and conversions. If an overflow occurs, it is ignored, and the result wraps around.
+You can't use the yield statements in:
+-----------------------------------------
+methods with in, ref, or out parameters.
+lambda expressions and anonymous methods.
+unsafe blocks. Before C# 13, yield was invalid in any method with an unsafe block. Beginning with C# 13, you can use yield in methods with unsafe blocks, but not in the unsafe block.
 
-Example:
+Restrictions on yield return and yield break:
+---------------------------------------------
+    Cannot be used in catch blocks: You cannot use yield return or yield break inside a catch block. This is because the catch block is meant to handle exceptions, and using yield statements within it could lead to unpredictable behavior in the iterator.
+    Cannot be used in finally blocks: You cannot use yield return or yield break inside a finally block. The finally block is meant to execute code that should run regardless of whether an exception occurs, and using yield statements within it could interfere with the guaranteed execution of the finally block.
+    Cannot be used in try blocks with a corresponding catch block: You cannot use yield return or yield break inside a try block if it has a corresponding catch block. This restriction ensures that the iterator's state is not disrupted by exception handling.
 
-int max = int.MaxValue;
-int result = unchecked(max + 1);
-Console.WriteLine(result); // Output: -2147483648
-In this example, the addition operation max + 1 is unchecked. The overflow is ignored, and the result wraps around to the minimum value an int can hold.
+Allowed Usage:
+-------------
+    You can use yield return and yield break within a try block that does not have a corresponding catch block but may have a finally block. This allows you to handle exceptions within the iterator method while ensuring that the finally block executes as expected.
 
-Usage Scenarios
-checked: Use when you want to ensure that overflow is detected and handled, especially in critical calculations where overflow could lead to incorrect results or security vulnerabilities.
-unchecked: Use when performance is critical, and you are certain that overflow will not cause issues, or when you intentionally want to allow overflow behavior (e.g., in certain low-level programming scenarios).
-Checked and Unchecked Contexts
-You can also specify checked and unchecked contexts for blocks of code or entire methods using the checked and unchecked keywords.
-
-Checked Context:
-
-checked
-{
-    int result = max + 1; // Overflow will be checked
-}
-Unchecked Context:
-
-unchecked
-{
-    int result = max + 1; // Overflow will be ignored
-}
-Compiler Options
-You can control the default overflow-checking behavior for your entire project using compiler options:
-
-/checked+: Enables overflow checking by default.
-/checked-: Disables overflow checking by default.
-Summary
-checked: Ensures overflow is detected and throws an exception.
-unchecked: Ignores overflow and allows wrap-around behavior.
-Contexts: Can be applied to individual expressions, blocks of code, or entire methods.
-
-User-Defined Operators
-When you define custom operators for a class or struct, you can specify how they handle overflow. The behavior of these operators is determined by the implementation you provide.
-
-Example:
-
-public struct CustomNumber
-{
-    public int Value;
-
-    public static CustomNumber operator +(CustomNumber a, CustomNumber b)
-    {
-        // Custom overflow handling
-        int result = a.Value + b.Value;
-        if (result < a.Value) // Simple overflow check
-        {
-            throw new OverflowException("Overflow occurred in CustomNumber addition");
-        }
-        return new CustomNumber { Value = result };
-    }
-}
-In this example, the + operator for CustomNumber includes a custom overflow check. If an overflow is detected, it throws an OverflowException. However, this behavior is entirely up to the implementation, and a different implementation might not throw an exception even in a checked context.
-
-User-Defined Conversions
-Similarly, user-defined conversions can have custom overflow behavior.
-
-Example:
-
-public struct CustomNumber
-{
-    public int Value;
-
-    public static explicit operator int(CustomNumber cn)
-    {
-        // Custom overflow handling
-        if (cn.Value > int.MaxValue)
-        {
-            throw new OverflowException("Overflow occurred in CustomNumber to int conversion");
-        }
-        return cn.Value;
-    }
-}
-In this example, the explicit conversion from CustomNumber to int includes a custom overflow check. Again, this behavior is determined by the implementation.
-
-Checked Context and User-Defined Operators
-When you use user-defined operators or conversions in a checked context, the checked context does not automatically enforce overflow checking for these operations. Instead, the behavior depends on the implementation of the user-defined operator or conversion.
-
-Example:
-
-CustomNumber a = new CustomNumber { Value = int.MaxValue };
-CustomNumber b = new CustomNumber { Value = 1 };
-
-try
-{
-    CustomNumber result = checked(a + b); // Custom overflow handling applies
-}
-catch (OverflowException ex)
-{
-    Console.WriteLine("Overflow occurred: " + ex.Message);
-}
-In this example, the checked context does not enforce overflow checking for the + operator. Instead, the custom overflow handling in the + operator implementation determines whether an exception is thrown.
-
-Summary
-User-Defined Operators: Custom behavior for overflow can be implemented, and it is not automatically enforced by the checked context.
-User-Defined Conversions: Similar to operators, custom overflow handling can be specified.
-Checked Context: Does not automatically enforce overflow checking for user-defined operators and conversions; the behavior depends on the implementation.
-
-In C#, the checked and unchecked statements and operators control the overflow-checking context for arithmetic operations and conversions. They only affect the operations that are textually within their scope. Here's a detailed explanation:
-
-checked and unchecked Statements
-The checked and unchecked statements define a block of code where overflow checking is either enforced (checked) or ignored (unchecked). The effect of these statements is limited to the operations within their block.
-
-Example:
-
-int max = int.MaxValue;
-
-checked
-{
-    int result = max + 1; // Overflow checking is enforced here
-}
-
-unchecked
-{
-    int result = max + 1; // Overflow checking is ignored here
-}
-In this example:
-
-The addition operation max + 1 inside the checked block will throw an OverflowException if an overflow occurs.
-The addition operation max + 1 inside the unchecked block will ignore the overflow and wrap around.
-checked and unchecked Operators
-The checked and unchecked operators can be used to control overflow checking for specific expressions. The effect of these operators is limited to the expression within their parentheses.
-
-Example:
-
-int max = int.MaxValue;
-
-int result1 = checked(max + 1); // Overflow checking is enforced for this expression
-int result2 = unchecked(max + 1); // Overflow checking is ignored for this expression
-In this example:
-
-The checked operator ensures that overflow checking is enforced for the expression max + 1, and an OverflowException will be thrown if an overflow occurs.
-The unchecked operator ensures that overflow checking is ignored for the expression max + 1, and the result will wrap around.
-Scope of checked and unchecked
-The scope of checked and unchecked is limited to the operations textually inside the statement block or operator's parentheses. Operations outside this scope are not affected.
-
-Example:
-
-int max = int.MaxValue;
-
-checked
-{
-    int result1 = max + 1; // Overflow checking is enforced here
-}
-int result2 = max + 1; // Overflow checking is not enforced here
-
-int result3 = checked(max + 1); // Overflow checking is enforced for this expression
-int result4 = unchecked(max + 1); // Overflow checking is ignored for this expression
-In this example:
-The checked block affects only the addition operation inside it.
-The checked and unchecked operators affect only the expressions within their parentheses.
-The addition operation outside the checked block and without the checked operator is not affected by overflow checking.
-
-Summary:
-checked Statement: Enforces overflow checking for all operations within its block.
-unchecked Statement: Ignores overflow checking for all operations within its block.
-checked Operator: Enforces overflow checking for the specific expression within its parentheses.
-unchecked Operator: Ignores overflow checking for the specific expression within its parentheses.
-Scope: The effect is limited to the operations textually inside the statement block or operator's parentheses.
-
-Numeric types and overflow-checking context
-The checked and unchecked keywords primarily apply to integral types where there's a sensible overflow behavior. The wraparound behavior where T.MaxValue + 1 becomes T.MinValue is sensible in a two's complement value. The represented value isn't correct since it can't fit in the storage for the type. Therefore, the bits are representative of the lower n-bits of the full result.
-
-For types like decimal, float, double, and Half that represent a more complex value or a one's complement value, wraparound isn't sensible. It can't be used to compute larger or more accurate results, so unchecked isn't beneficial.
-
-float, double, and Half have sensible saturating values for PositiveInfinity and NegativeInfinity, so you can detect overflow in an unchecked context. For decimal, no such limits exist, and saturating at MaxValue can lead to errors or confusion. Operations that use decimal throw in both a checked and unchecked context.
-
-Operations affected by the overflow-checking context
-The overflow-checking context affects the following operations:
-
-The following built-in arithmetic operators: unary ++, --, - and binary +, -, *, and / operators, when their operands are of an integral type (that is, either integral numeric or char type) or an enum type.
-
-Explicit numeric conversions between integral types or from float or double to an integral type.
-
-When you convert a decimal value to an integral type and the result is outside the range of the destination type, an OverflowException is always thrown, regardless of the overflow-checking context.
-
-Beginning with C# 11, user-defined checked operators and conversions. For more information, see the User-defined checked operators section of the Arithmetic operators article.
-
-Default overflow-checking context
-If you don't specify the overflow-checking context, the value of the CheckForOverflowUnderflow compiler option defines the default context for nonconstant expressions. By default the value of that option is unset and integral-type arithmetic operations and conversions are executed in an unchecked context.
-
-Constant expressions are evaluated by default in a checked context and overflow causes a compile-time error. You can explicitly specify an unchecked context for a constant expression with the unchecked statement or operator.
 
 **/
 namespace YieldStatement{
-    class YieldStatementClass{
+    class YieldClass{
+        public static int requestCountYield = 0;
+        public static int requestCount = 0;
+        public static IEnumerable<int> GetNumbers(){
+            int[] numbers = [5,4,3,2,1];
+            requestCount++;
+            return numbers;
+        }
+
+        public static IEnumerable<int> GetNumbersYield(){
+            requestCountYield++;
+            yield return 1;
+            requestCountYield++;
+            yield return 2;
+            requestCountYield++;
+            yield return 3;
+            requestCountYield++;
+            yield return 4;
+            requestCountYield++;
+            yield break;
+            requestCountYield++;
+            yield return 5;
+        }
+
+        //As the preceding example shows, when you start to iterate over an iterator's result, an iterator is executed until the first yield return statement is reached. Then, the execution of an iterator is suspended and the caller gets the first iteration value and processes it. 
+        //On each subsequent iteration, the execution of an iterator resumes after the yield return statement that caused the previous suspension and continues until the next yield return statement is reached. The iteration completes when control reaches the end of an iterator or a yield break statement.
+        public static IEnumerable<int> GetNumberCount(int Count){
+            requestCountYield = 0;
+            for(int i = 1; i<=Count; i++){
+                requestCountYield++;
+                yield return i;
+            }
+
+        }
+
+        static IEnumerable<int> GeneratePrimes(int count)
+        {
+            int num = 2;
+            int found = 0;
+            while (found < count)
+            {
+                if (IsPrime(num))
+                {
+                    yield return num;
+                    found++;
+                }
+                num++;
+            }
+        }
+
+        static bool IsPrime(int number)
+        {
+            if (number < 2) return false;
+            for (int i = 2; i <= Math.Sqrt(number); i++)
+            {
+                if (number % i == 0) return false;
+            }
+            return true;
+        }
+
         public static void Main(){
-            Console.WriteLine("YeildStatement");
-            int max = int.MaxValue;
-            int num = max + 3;
-
-            Console.WriteLine(num + 2);//overflow exception ignored.
-
-            try{
-                checked{
-                    //within the scope of checked context only the overflow will checked .
-                    //variable declaration and initialization also need to within context to enfore overflow;
-                    int result ;
-                    //result = max + 2;
-                    num += 2;//this will be ignored becz declaration is in out of context.
-                    Console.WriteLine("inside the checked context :"+num);
-                }
-
-                unchecked{
-                    int result ;
-                    result = max + 2;
-                    Console.WriteLine("inside uncheced context:"+ result);
-                }
-
-                int b = unchecked(max+2);//ignored;
-                Console.WriteLine(b);
-                int a = checked(max+2);//error will occurs here.
-                
+            Console.WriteLine("Yield Statement.");
+            
+            foreach(int i in GetNumbers()){
+                Console.Write(i+",");
             }
-            catch(OverflowException e){
-                Console.WriteLine("Overflow execption Occurs.");
+            Console.WriteLine();
+            Console.WriteLine("Request count of Normal methods :"+ requestCount);
+
+            Console.WriteLine("Yield Statement Foreach Loop Request elemet and yield return one at a time on demand based, where element state managed by compilers. ");
+            foreach(int i in GetNumbersYield()){
+                Console.Write(i+",");
             }
+            Console.WriteLine();
+            Console.WriteLine("Request count of Yield Method :"+ requestCountYield);
+
+            foreach(int i in GetNumberCount(7)){
+                Console.Write(i+",");
+            }
+            Console.WriteLine();
+            Console.WriteLine("Request count of GetNumberCount Yield Method :"+ requestCountYield);
+
+            foreach (int prime in GeneratePrimes(10))
+            {
+                Console.Write(prime);
+            }
+            Console.WriteLine();
         }
     }
 }
