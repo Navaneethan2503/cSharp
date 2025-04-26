@@ -174,7 +174,7 @@ namespace SpanNamespace{
             await Task.Delay(1000); // Suspension point
 
             // Attempt to use span after suspension
-            span[0] = 42; // Unsafe, span may no longer be valid
+            //span[0] = 42; // Unsafe, span may no longer be valid
         }
 
         
