@@ -239,6 +239,12 @@ namespace LinqClassNamespace{
                 string[] companies = packages.Select(pkg => pkg.Company).ToArray();
                 Console.WriteLine("ToArray() :"+ string.Join(',',companies));
 
+                //All
+                IList<int> nums = [-5,-5,-2,-2];
+                IList<int> a = [-5,-4,-3,-2];
+
+                Console.WriteLine("All :"+string.Join(',',nums.All(a.Contains)));
+
         }
     }
 }
