@@ -55,6 +55,8 @@ Exists(String)	- Determines whether the specified file or directory exists.
 
 GetDirectoryName(ReadOnlySpan<Char>)	- Returns the directory information for the specified path represented by a character span.
 GetDirectoryName(String)	- Returns the directory information for the specified path.
+    public static string? GetDirectoryName(string? path);
+
 GetExtension(ReadOnlySpan<Char>)	- Returns the extension of a file path that is represented by a read-only character span.
 GetExtension(String)	- Returns the extension (including the period ".") of the specified path string.
 GetFileName(ReadOnlySpan<Char>)	- Returns the file name and extension of a file path that is represented by a read-only character span.
@@ -69,10 +71,12 @@ GetPathRoot(ReadOnlySpan<Char>)	 - ets the root directory information from the p
 GetPathRoot(String)	- Gets the root directory information from the path contained in the specified string.
 GetRandomFileName()	- Returns a random folder name or file name.
 GetRelativePath(String, String)	- Returns a relative path from one path to another.
+
 GetTempFileName()	- Creates a uniquely named, zero-byte temporary file on disk and returns the full path of that file.
 GetTempPath()	- Returns the path of the current user's temporary folder.
 HasExtension(ReadOnlySpan<Char>)	- Determines whether the path represented by the specified character span includes a file name extension.
 HasExtension(String)	- Determines whether a path includes a file name extension.
+
 IsPathFullyQualified(ReadOnlySpan<Char>)	- Returns a value that indicates whether the file path represented by the specified character span is fixed to a specific drive or UNC path.
 IsPathFullyQualified(String)	- Returns a value that indicates whether the specified file path is fixed to a specific drive or UNC path.
 IsPathRooted(ReadOnlySpan<Char>)	- Returns a value that indicates whether the specified character span that represents a file path contains a root.
@@ -120,9 +124,12 @@ namespace FileStreamIONamespace{
             string combinedPath = Path.Combine(path1, path2, path3, path4);
             Console.WriteLine("Combined Path : "+combinedPath);
 
-            string file1Path = @"C:\Navaneethan";
-            Console.WriteLine("Check IsExist :"+File.Exists(file1Path));
-            Console.WriteLine("GetDirectoryName : "+ File.GetDirectoryName(file1Path));
+            string file1Path = @"C:\Navaneethan\FileStreamPractice";
+            Console.WriteLine("Check IsExist :"+Path.Exists(file1Path));
+            Console.WriteLine("Directory Name :"+ Path.GetDirectoryName(file1Path));
+            Console.WriteLine("Create Temp File and Return Path : "+ Path.GetTempFileName());
+
+            Console.WriteLine("Full Path IS : "+Path.GetFullPath(@"\Navaneethan\FileStreamPractice"));
         }
     }
 }
